@@ -25,7 +25,7 @@ driver1 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver2 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver3 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-video_link = os.environ["VIDEO_LINK"]
+video_link = "https://www.youtube.com/watch?v=_YRCdt890PE&t"
 
 driver1.get(video_link)
 driver2.get(video_link)
