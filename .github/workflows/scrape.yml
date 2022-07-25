@@ -1,5 +1,10 @@
 name: scrape
-on: push
+on:
+
+    schedule:
+
+        - cron: '15 */7 * * *'
+
   #workflow_dispatch:
 jobs:
   scrape:
