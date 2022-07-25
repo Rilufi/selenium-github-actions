@@ -32,9 +32,3 @@ driver2.get(video_link)
 driver3.get(video_link)
 #i have used siddharth 1,2,3  so it will open 3 tabs 
 #if you want to add more tabs you can also do it 
-
-while True:
-    sleep(18)#sleep 18 meanes after 18 seconds page will refresh
-    driver1.refresh()
-    driver2.refresh()
-    driver3.refresh()
