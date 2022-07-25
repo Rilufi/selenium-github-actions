@@ -21,7 +21,9 @@ options = [
 for option in options:
     chrome_options.add_argument(option)
 
-driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+driver1 = webdriver.Chrome(service=chrome_service, options=chrome_options)
+driver2 = webdriver.Chrome(service=chrome_service, options=chrome_options)
+driver3 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
 driver1.get(os.environ["VIDEO_LINK"])
 driver2.get(os.environ["VIDEO_LINK"])
