@@ -25,9 +25,11 @@ driver1 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver2 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 driver3 = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-driver1.get(os.environ["VIDEO_LINK"])
-driver2.get(os.environ["VIDEO_LINK"])
-driver3.get(os.environ["VIDEO_LINK"])
+video_link = os.environ["VIDEO_LINK"]
+
+driver1.get(video_link)
+driver2.get(video_link)
+driver3.get(video_link)
 #i have used siddharth 1,2,3  so it will open 3 tabs 
 #if you want to add more tabs you can also do it 
 
