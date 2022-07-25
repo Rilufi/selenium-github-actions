@@ -1,6 +1,6 @@
 name: scrape
-on:
-  workflow_dispatch:
+on: push
+  #workflow_dispatch:
 jobs:
   scrape:
     runs-on: ubuntu-latest
