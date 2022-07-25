@@ -30,5 +30,6 @@ video_link = "https://www.youtube.com/watch?v=_YRCdt890PE&t"
 driver1.get(video_link)
 driver2.get(video_link)
 driver3.get(video_link)
+sleep(1800)
 #i have used siddharth 1,2,3  so it will open 3 tabs 
 #if you want to add more tabs you can also do it 
