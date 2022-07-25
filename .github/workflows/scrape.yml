@@ -13,7 +13,7 @@ jobs:
       - name: Test env vars for python
         run: python -c 'import os;print(os.environ)'
         env:
-           envkey_VIDEO_LINK: ${{ secrets.VIDEO_LINK }}
+           VIDEO_LINK: ${{ secrets.VIDEO_LINK }}
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
