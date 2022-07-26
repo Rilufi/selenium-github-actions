@@ -7,6 +7,9 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep
 from datetime import datetime
 from selenium.webdriver.common.by import By
+from time import time
+
+timeout_start = time.time()
 
 chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 
@@ -134,39 +137,40 @@ class Bot:
 #reader = readChannels.channelReader()
 #links = reader.get_videos()
 #reader.writeTxt(links)
-
+timeout = 21500
 
 load_links = Bot()  #aqui ta abrindo uma tela sozinho
 links = load_links.read_arq()
-for view in range(50):
-    for video in links:
-        bot = Bot()
-        bot.open_url(video)
-        print('-'*100 + '->')
-        print(video)
-        sleep(3)
-        bot.get_video_name()
-        total_dur = bot.get_video_duration()
-        bot.speed_up()
-        sleep(2)
-        test = bot.get_time_watched()
-        if test == '0:00':
-            bot.play_video()
-            print('Forced play!')
-        print(f'Watching! {datetime.now():%d-%m-%y %H:%M:%S}')
-        time_before = datetime.now()
-        watched = 0
-        while total_dur != watched:
-            if watched == 0:
-                sleep(1)
-            watched = bot.get_time_watched()
-            time_after = datetime.now() - time_before
-            if time_after.seconds >= 480:
-                print('Bug or ad too long, starting next video!')
-                break
+while time.time() < timeout_start + timeout:
+    for view in range(50):
+        for video in links:
+            bot = Bot()
+            bot.open_url(video)
+            print('-'*100 + '->')
+            print(video)
+            sleep(3)
+            bot.get_video_name()
+            total_dur = bot.get_video_duration()
+            bot.speed_up()
+            sleep(2)
+            test = bot.get_time_watched()
+            if test == '0:00':
+                bot.play_video()
+                print('Forced play!')
+            print(f'Watching! {datetime.now():%d-%m-%y %H:%M:%S}')
+            time_before = datetime.now()
+            watched = 0
+            while total_dur != watched:
+                if watched == 0:
+                    sleep(1)
+                watched = bot.get_time_watched()
+                time_after = datetime.now() - time_before
+                if time_after.seconds >= 480:
+                    print('Bug or ad too long, starting next video!')
+                    break
 
-        print(f'View {view+1} completa!')
-        print('-'*100 + '->')
-        print()
-        sleep(1)
-        bot.close_browser()
+            print(f'View {view+1} completa!')
+            print('-'*100 + '->')
+            print()
+            sleep(1)
+            bot.close_browser()
