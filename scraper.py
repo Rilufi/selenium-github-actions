@@ -9,7 +9,7 @@ from datetime import datetime
 from selenium.webdriver.common.by import By
 
 
-timeout_start = time.time()
+timeout_start = time()
 
 chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 
