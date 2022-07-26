@@ -4,10 +4,10 @@ from webdriver_manager.core.utils import ChromeType
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.keys import Keys
-from time import sleep
+from time import sleep, time
 from datetime import datetime
 from selenium.webdriver.common.by import By
-from time import time
+
 
 timeout_start = time.time()
 
