@@ -137,7 +137,7 @@ class Bot:
 #reader = readChannels.channelReader()
 #links = reader.get_videos()
 #reader.writeTxt(links)
-timeout = 21500
+timeout = 21000
 
 load_links = Bot()  #aqui ta abrindo uma tela sozinho
 links = load_links.read_arq()
