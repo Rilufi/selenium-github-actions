@@ -141,8 +141,8 @@ timeout = 21000
 
 load_links = Bot()  #aqui ta abrindo uma tela sozinho
 links = load_links.read_arq()
-while time() < timeout_start + timeout:
-    for view in range(50):
+for view in range(50):
+    while time() < timeout_start + timeout:
         for video in links:
             bot = Bot()
             bot.open_url(video)
