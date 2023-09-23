@@ -9,7 +9,8 @@ from time import sleep, time
 from datetime import datetime
 from selenium.webdriver.common.by import By
 
-chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+#chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+chrome_service=Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install()))
 
 chrome_options = Options()
 options = [
