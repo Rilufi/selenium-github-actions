@@ -73,7 +73,7 @@ bot.login()
 try:
     bot.auto_swipe()
 except:
-    ask = input("Deseja continuar? ")
+    ask = s #input("Deseja continuar? ")
     if ask != 'n':
         bot.auto_swipe()
     else:
