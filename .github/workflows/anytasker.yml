@@ -1,5 +1,5 @@
-name: parfeito
-on: #push
+name: Taskeiro
+on: push
 
  #   schedule:
 
@@ -32,4 +32,4 @@ jobs:
         env:
                   USERNAME: ${{ secrets.USERNAME }}
                   PASSWORD: ${{ secrets.PASSWORD }}
-        run: python parfeito.py
+        run: python anypython.py
