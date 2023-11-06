@@ -1,13 +1,13 @@
 name: Taskeiro
-on: push
+on:
 
- #   schedule:
+    schedule:
 
-#        - cron: '0 */7 * * *'
+        - cron: '0 10 * * 1'
 
   #workflow_dispatch:
 jobs:
-  scrape:
+  tasker:
     runs-on: ubuntu-latest
     steps:
       - name: Check out this repo
@@ -28,7 +28,7 @@ jobs:
       #   run: sudo apt install -y chromium-browser
       - name: Install all necessary packages
         run: pip install requests beautifulsoup4 pandas webdriver_manager selenium
-      - name: Run the scraping script
+      - name: Run the pythonanywhere script
         env:
                   USERNAME: ${{ secrets.USERNAME }}
                   PASSWORD: ${{ secrets.PASSWORD }}
