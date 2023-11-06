@@ -34,7 +34,6 @@ class TaskerBot():
     def login(self):
         self.driver.get('https://www.pythonanywhere.com/')
         sleep(2)
-
         fb_btn = self.driver.find_element(By.CLASS_NAME,'login_link')
         fb_btn.click()
         email_in = self.driver.find_element("xpath",'//*[@id="id_auth-username"]')
@@ -55,6 +54,17 @@ class TaskerBot():
         remain_time = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div[2]/div[3]/div/div/table/tbody/tr/td[5]')
         print('Remaining Time:', remain_time.text)
 
+    def weber(self):
+        task_btn = self.driver.find_element("xpath",'//*[@id="id_web_app_link"]')
+        task_btn.click()
+        sleep(2)
+        reload_btn = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div[2]/div/div/div[6]/div/div/div/form/input[2]')
+        reload_btn.click()
+        sleep(2)
+        until_time = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div[2]/div/div/div[6]/div/p[1]/strong')
+        print('Website up until:', until_time.text)
+
 bot = TaskerBot()
 bot.login()
 bot.tasker()
+bot.weber()
