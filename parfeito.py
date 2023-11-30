@@ -9,6 +9,8 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep, time
 from datetime import datetime
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 
@@ -57,8 +59,11 @@ class ParPerfeitoBot():
         sleep(15)
 
     def like(self):
-        # Clicar no botão de curtir
-        like_btn = self.driver.find_element(By.XPATH, '//*[@id="mainContent"]/div[2]/section/div[1]/div/div[4]/span/button/span/div[2]')
+        # Esperar até que o botão de curtir seja visível
+        like_btn_locator = (By.XPATH, '//*[@id="mainContent"]/div[2]/section/div[1]/div/div[4]/span/button/span/div[2]')
+        like_btn = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_element_located(like_btn_locator)
+        )
         like_btn.click()
 
     def like2(self):
