@@ -1,4 +1,4 @@
-from secrets import username, password
+from secrets import usuario, senha
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 #from webdriver_manager.core.utils import ChromeType
@@ -45,10 +45,10 @@ class ParPerfeitoBot():
         fb_btn.click()
 
         email_in = self.driver.find_element(By.ID, 'email')
-        email_in.send_keys(username)
+        email_in.send_keys(usuario)
 
         pw_in = self.driver.find_element(By.ID, 'password')
-        pw_in.send_keys(password)
+        pw_in.send_keys(senha)
 
         # Clicar no botão de login
         login_btn = self.driver.find_element(By.XPATH, '//*[@id="mainContent"]/form/div/div[1]/div[5]/button/span')
