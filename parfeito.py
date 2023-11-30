@@ -98,7 +98,5 @@ class ParPerfeitoBot():
 bot = ParPerfeitoBot()
 bot.login()
 
-try:
-    bot.auto_swipe()
-except:
-    print("Nope")
+
+bot.auto_swipe()
