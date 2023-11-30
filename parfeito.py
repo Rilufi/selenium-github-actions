@@ -31,7 +31,7 @@ class ParPerfeitoBot():
     def __init__(self):
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-def login(self):
+    def login(self):
         self.driver.get('https://www.parperfeito.com.br/')
         self.driver.implicitly_wait(10)  # Aguarde até 10 segundos por qualquer elemento a ser encontrado
         print(self.driver.page_source)  # Exibir HTML da página no console para debug
