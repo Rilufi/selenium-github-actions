@@ -60,6 +60,8 @@ class ParPerfeitoBot():
 
     def like(self):
         # Esperar até que o botão de curtir seja visível
+        self.driver.implicitly_wait(10)  # Aguarde até 10 segundos por qualquer elemento a ser encontrado
+        print(self.driver.page_source)
         like_btn_locator = (By.XPATH, '//*[@id="mainContent"]/div[2]/section/div[1]/div/div[4]/span/button/span/div[2]')
         like_btn = WebDriverWait(self.driver, 10).until(
             EC.visibility_of_element_located(like_btn_locator)
