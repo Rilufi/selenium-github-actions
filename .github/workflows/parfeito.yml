@@ -1,0 +1,35 @@
+name: Parfeiteiro
+on: push
+
+#    schedule:
+
+ #       - cron: '0 10 * * 1'
+
+  #workflow_dispatch:
+jobs:
+  tasker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out this repo
+        uses: actions/checkout@v2
+      - name: Keep this repo alive
+        uses: gautamkrishnar/keepalive-workflow@master
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+      - name: Installed package list
+        run: apt list --installed
+      - name: Remove Chrome
+        run: sudo apt purge google-chrome-stable
+      # Chromium is already installed!
+      # - name: Install software
+      #   run: sudo apt install -y chromium-browser
+      - name: Install all necessary packages
+        run: pip install requests beautifulsoup4 pandas webdriver_manager selenium
+      - name: Run the parfeito script
+        env:
+                  USUARIO: ${{ secrets.USUARIO }}
+                  SENHA: ${{ secrets.SENHA }}
+        run: python parfeito.py
