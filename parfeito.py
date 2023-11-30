@@ -48,7 +48,7 @@ class ParPerfeitoBot():
         fb_btn = self.driver.find_element(By.XPATH, '//*[@id="__next"]/div/div/div/button/span')
         fb_btn.click()
 
-        email_in = self.driver.find_element(By.ID, 'email')
+        email_in = self.driver.find_element(By.XPATH, '//input[@name="email"]')
         email_in.send_keys(usuario)
 
         pw_in = self.driver.find_element(By.ID, 'password')
