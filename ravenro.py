@@ -3,8 +3,10 @@ from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
-from time import sleep
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from time import sleep
 
 usuario = os.getenv("USUARIO")
 senha = os.getenv("SENHA")
@@ -27,11 +29,12 @@ chrome_options.add_argument("--remote-debugging-port=9222")
 class TaskerBot():
     def __init__(self):
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+        self.wait = WebDriverWait(self.driver, 10)  # 10 segundos de espera explícita
 
     def login(self):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
-        email_in = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')
+        email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')))
         email_in.send_keys(usuario)
         pw_in = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[2]')
         pw_in.send_keys(senha)
@@ -41,10 +44,11 @@ class TaskerBot():
 
     def tasker(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
-        task_btn = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')
+        task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
         task_btn.click()
+        self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
-        extend_btn = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')
+        extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
         extend_btn.click()
         sleep(2)
 
