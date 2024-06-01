@@ -1,41 +1,26 @@
 from secrets import usuario, senha
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-#from webdriver_manager.core.utils import ChromeType
-from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.keys import Keys
-from time import sleep, time
-from datetime import datetime
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from time import sleep
 
-chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
+# Update the path to your downloaded ChromeDriver (replace with actual path)
+chrome_driver_path = "/path/to/chromedriver"
 
 chrome_options = Options()
-options = [
-#   "--headless",
-    "--disable-gpu",
-    "--window-size=1920,1200",
-    "--ignore-certificate-errors",
-    "--disable-extensions",
-    "--no-sandbox",
-    "--disable-dev-shm-usage"
-]
-for option in options:
-    chrome_options.add_argument(option)
+# Comment out these options if they cause problems
+# chrome_options.add_argument("--headless")
+# chrome_options.add_argument("--disable-gpu")
 
-class TaskerBot():
-    def __init__(self):
-        options = Options()
-        options.headless = True
-        self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
+driver = webdriver.Chrome(executable_path=chrome_driver_path, options=chrome_options)
 
-    def login(self):
-        self.driver.get('https://cp.ravenro.com.br/')
+def login():
+        driver.get('https://cp.ravenro.com.br/')
         sleep(2)
-#        fb_btn = self.driver.find_element(By.CLASS_NAME,'login_link')
- #       fb_btn.click()
+    #   fb_btn = self.driver.find_element(By.CLASS_NAME,'login_link')
+     #  fb_btn.click()
         email_in = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')
         email_in.send_keys(usuario)
         pw_in = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div/div[2]/div/input[2]')
@@ -44,15 +29,21 @@ class TaskerBot():
         login_btn.click()
         sleep(5)
 
-    def tasker(self):
-        self.driver.get('https://cp.ravenro.com.br/votar')
-        task_btn = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')
+def tasker():
+        driver.get('https://cp.ravenro.com.br/votar')
+        sleep(2)
         task_btn.click()
         sleep(2)
         extend_btn = self.driver.find_element("xpath",'/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')
         extend_btn.click()
         sleep(2)
+try:
+    login()
+    tasker()
+except Exception as e:
+    print(f"An error occurred: {e}")
+finally:
+    driver.quit()  # Always close the browser window
 
-bot = TaskerBot()
-bot.login()
-bot.tasker()
+bot = login()  # Assuming login returns an object (modify if needed)
+# bot.tasker()  # Uncomment if login doesn't return an object
