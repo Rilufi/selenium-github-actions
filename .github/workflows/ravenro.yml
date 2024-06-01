@@ -29,5 +29,5 @@ jobs:
       run: |
         python ravenro.py
       env:
-        usuario: ${{ secrets.USUARIO }}
-        senha: ${{ secrets.SENHA }}
+        USUARIO: ${{ secrets.USUARIO }}
+        SENHA: ${{ secrets.SENHA }}
