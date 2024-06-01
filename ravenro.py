@@ -9,11 +9,11 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, ElementNotInteractableException
 from time import sleep
 
-usuario = os.getenv("USUARIO")
-senha = os.getenv("SENHA")
-
-if not usuario or not senha:
-    raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
+# Lista de credenciais
+credenciais = [
+    {"usuario": os.getenv("USUARIO"), "senha": os.getenv("SENHA")},
+    {"usuario": os.getenv("USUARIO_TULYO"), "senha": os.getenv("SENHA_TULYO")}
+]
 
 chrome_service = Service(ChromeDriverManager().install())
 
@@ -32,7 +32,7 @@ class TaskerBot():
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # 10 segundos de espera explícita
 
-    def login(self):
+    def login(self, usuario, senha):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
         email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')))
@@ -58,9 +58,17 @@ class TaskerBot():
             extend_btn.click()
         except (TimeoutException, ElementNotInteractableException):
             print("Segundo botão de votação não encontrado ou não interagível.")
-
+        
         sleep(2)
 
-bot = TaskerBot()
-bot.login()
-bot.tasker()
+    def close(self):
+        self.driver.quit()
+
+for cred in credenciais:
+    if not cred["usuario"] or not cred["senha"]:
+        raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
+    
+    bot = TaskerBot()
+    bot.login(cred["usuario"], cred["senha"])
+    bot.tasker()
+    bot.close()
