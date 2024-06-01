@@ -16,8 +16,14 @@ jobs:
       - name: Install necessary packages
         run: pip install requests beautifulsoup4 pandas webdriver_manager selenium
 
+      - name: Set ChromeDriver path
+        run: |
+          export CHROME_DRIVER_PATH="/tmp/chromedriver"  # Replace with actual path
+          echo "ChromeDriver path set to: $CHROME_DRIVER_PATH"
+    
       - name: Run the Ragnarok script
         env:
+          CHROME_DRIVER_PATH: ${{ env.CHROME_DRIVER_PATH }}  # Use the environment variable
           USUARIO: ${{ secrets.USUARIO }}
-          SENHA: ${{ secrets.USUARIO }}  # Typo correction (should be SENHA)
+          SENHA: ${{ secrets.SENHA }}
         run: python ravenro.py
