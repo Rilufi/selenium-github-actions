@@ -44,12 +44,20 @@ class TaskerBot():
 
     def tasker(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
-        task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
-        task_btn.click()
+        try:
+            task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
+            task_btn.click()
+        except TimeoutException:
+            print("Primeiro botão de votação não encontrado, tentando o segundo.")
+        
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
-        extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
-        extend_btn.click()
+        try:
+            extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
+            extend_btn.click()
+        except TimeoutException:
+            print("Segundo botão de votação não encontrado.")
+
         sleep(2)
 
 bot = TaskerBot()
