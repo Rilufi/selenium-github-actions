@@ -1,6 +1,8 @@
 name: Selenium Tests
 
-on: [push]
+on:
+  schedule:
+    - cron: '0 * * * *' 
 
 jobs:
   test:
@@ -31,3 +33,5 @@ jobs:
       env:
         USUARIO: ${{ secrets.USUARIO }}
         SENHA: ${{ secrets.SENHA }}
+        USUARIO_TULYO: ${{ secrets.USUARIO_TULYO }}
+        SENHA_TULYO: ${{ secrets.SENHA_TULYO }}
