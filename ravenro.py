@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import TimeoutException, ElementNotInteractableException
 from time import sleep
 
 usuario = os.getenv("USUARIO")
@@ -47,16 +48,16 @@ class TaskerBot():
         try:
             task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
             task_btn.click()
-        except TimeoutException:
-            print("Primeiro botão de votação não encontrado, tentando o segundo.")
+        except (TimeoutException, ElementNotInteractableException):
+            print("Primeiro botão de votação não encontrado ou não interagível, tentando o segundo.")
         
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
         try:
             extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
             extend_btn.click()
-        except TimeoutException:
-            print("Segundo botão de votação não encontrado.")
+        except (TimeoutException, ElementNotInteractableException):
+            print("Segundo botão de votação não encontrado ou não interagível.")
 
         sleep(2)
 
