@@ -1,10 +1,16 @@
-from secrets import usuario, senha
+import os
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 from time import sleep
 from selenium.webdriver.common.by import By
+
+usuario = os.getenv("USUARIO")
+senha = os.getenv("SENHA")
+
+if not usuario or not senha:
+    raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
 
 chrome_service = Service(ChromeDriverManager().install())
 
