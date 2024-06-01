@@ -7,14 +7,14 @@ from selenium.webdriver.common.keys import Keys
 from time import sleep
 
 # Update the path to your downloaded ChromeDriver (replace with actual path)
-#chrome_driver_path = "/path/to/chromedriver"
+chrome_driver_path = "/tmp/chromedriver"
 
 chrome_options = Options()
 # Comment out these options if they cause problems
 # chrome_options.add_argument("--headless")
 # chrome_options.add_argument("--disable-gpu")
-#executable_path=chrome_driver_path, 
-driver = webdriver.Chrome(options=chrome_options)
+
+driver = webdriver.Chrome(executable_path=chrome_driver_path, options=chrome_options)
 
 def login():
         driver.get('https://cp.ravenro.com.br/')
