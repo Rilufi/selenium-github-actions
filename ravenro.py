@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException
+from selenium.common.exceptions import TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException, NoAlertPresentException
 from time import sleep
 
 # Lista de credenciais
@@ -33,6 +33,15 @@ class TaskerBot():
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
         self.wait = WebDriverWait(self.driver, 10)  # 10 segundos de espera explícita
 
+    def handle_alert(self):
+        try:
+            alert = self.driver.switch_to.alert
+            alert_text = alert.text
+            print(f"Alerta presente: {alert_text}")
+            alert.accept()
+        except NoAlertPresentException:
+            pass
+
     def login(self, usuario, senha):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
@@ -46,28 +55,24 @@ class TaskerBot():
 
     def tasker(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
+        self.handle_alert()  # Verifica e lida com alertas antes de continuar
         try:
             task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
             task_btn.click()
-        except (TimeoutException, ElementNotInteractableException):
-            print("Primeiro botão de votação não encontrado ou não interagível, tentando o segundo.")
-        except UnexpectedAlertPresentException:
-            alert = self.driver.switch_to.alert
-            print(f"Alerta presente durante o clique no primeiro botão: {alert.text}")
-            alert.accept()
-        
+        except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
+            print(f"Erro ao clicar no primeiro botão de votação: {e}")
+            self.handle_alert()
+
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
+        self.handle_alert()  # Verifica e lida com alertas antes de continuar
         try:
             extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
             extend_btn.click()
-        except (TimeoutException, ElementNotInteractableException):
-            print("Segundo botão de votação não encontrado ou não interagível.")
-        except UnexpectedAlertPresentException:
-            alert = self.driver.switch_to.alert
-            print(f"Alerta presente durante o clique no segundo botão: {alert.text}")
-            alert.accept()
-        
+        except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
+            print(f"Erro ao clicar no segundo botão de votação: {e}")
+            self.handle_alert()
+
         sleep(2)
 
     def close(self):
