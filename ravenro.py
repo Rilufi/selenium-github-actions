@@ -76,6 +76,8 @@ class TaskerBot():
         sleep(2)
 
     def close(self):
+        logoff_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[2]/div/div/div[2]/div[2]/button')))
+        logoff_btn.click()
         self.driver.quit()
 
 for cred in credenciais:
