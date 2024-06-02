@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, ElementNotInteractableException
+from selenium.common.exceptions import TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException
 from time import sleep
 
 # Lista de credenciais
@@ -51,6 +51,10 @@ class TaskerBot():
             task_btn.click()
         except (TimeoutException, ElementNotInteractableException):
             print("Primeiro botão de votação não encontrado ou não interagível, tentando o segundo.")
+        except UnexpectedAlertPresentException:
+            alert = self.driver.switch_to.alert
+            print(f"Alerta presente durante o clique no primeiro botão: {alert.text}")
+            alert.accept()
         
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
@@ -59,6 +63,10 @@ class TaskerBot():
             extend_btn.click()
         except (TimeoutException, ElementNotInteractableException):
             print("Segundo botão de votação não encontrado ou não interagível.")
+        except UnexpectedAlertPresentException:
+            alert = self.driver.switch_to.alert
+            print(f"Alerta presente durante o clique no segundo botão: {alert.text}")
+            alert.accept()
         
         sleep(2)
 
