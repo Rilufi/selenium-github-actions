@@ -57,22 +57,34 @@ class TaskerBot():
         self.driver.get('https://cp.ravenro.com.br/votar')
         self.handle_alert()  # Verifica e lida com alertas antes de continuar
         try:
-            task_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
+            task_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/button')))
             task_btn.click()
         except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
             print(f"Erro ao clicar no primeiro botão de votação: {e}")
             self.handle_alert()
-
+            try:
+                # Lê o tempo restante
+                time_element = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[1]/div/div[2]/div[2]/div')
+                print(f"Tempo restante para votar: {time_element.text}")
+            except TimeoutException:
+                print("Elemento de tempo restante não encontrado.")
+        
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(2)
         self.handle_alert()  # Verifica e lida com alertas antes de continuar
         try:
-            extend_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
+            extend_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/button')))
             extend_btn.click()
         except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
             print(f"Erro ao clicar no segundo botão de votação: {e}")
             self.handle_alert()
-
+            try:
+                # Lê o tempo restante
+                time_element = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[5]/div[2]/div/div[2]/div[2]/div')
+                print(f"Tempo restante para votar: {time_element.text}")
+            except TimeoutException:
+                print("Elemento de tempo restante não encontrado.")
+        
         sleep(2)
 
     def close(self):
