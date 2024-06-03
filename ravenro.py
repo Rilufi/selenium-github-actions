@@ -78,6 +78,17 @@ class TaskerBot():
         self.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]', "Erro ao clicar no segundo botão de votação")
         sleep(2)
 
+    def logoff(self):
+        # Voltar para a página inicial
+        self.driver.get('https://cp.ravenro.com.br/inicio')
+        try:
+            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div/div[2]/div[2]/button/svg/text')))
+            logoff_btn.click()
+        except TimeoutException as e:
+            print(f"Erro ao tentar fazer logoff: {e}")
+        finally:
+            self.driver.quit()
+
     def close(self):
         self.driver.quit()
 
@@ -88,4 +99,4 @@ for cred in credenciais:
     bot = TaskerBot()
     bot.login(cred["usuario"], cred["senha"])
     bot.tasker()
-    bot.close()
+    bot.logoff()
