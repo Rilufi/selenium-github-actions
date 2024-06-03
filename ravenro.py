@@ -54,38 +54,26 @@ class TaskerBot():
         login_btn.click()
         sleep(5)
 
+    def votar(self, button_xpath, error_message):
+        self.driver.get('https://cp.ravenro.com.br/votar')
+        self.handle_alert()  # Verifica e lida com alertas antes de continuar
+        try:
+            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
+            btn.click()
+        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
+            print(f"{error_message}: {e}")
+            self.handle_alert()
+            try:
+                # Lê o tempo restante
+                time_element = self.driver.find_element(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "baTaIaCt")]')
+                print(f"Tempo restante para votar: {time_element.text}")
+            except NoSuchElementException:
+                print("Elemento de tempo restante não encontrado.")
+
     def tasker(self):
-        self.driver.get('https://cp.ravenro.com.br/votar')
-        self.handle_alert()  # Verifica e lida com alertas antes de continuar
-        try:
-            task_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "baTaHxaE")]')))
-            task_btn.click()
-        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
-            print(f"Erro ao clicar no primeiro botão de votação: {e}")
-            self.handle_alert()
-            try:
-                # Lê o tempo restante
-                time_element = self.driver.find_element(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "baTaIaCt")]')
-                print(f"Tempo restante para votar: {time_element.text}")
-            except NoSuchElementException:
-                print("Elemento de tempo restante não encontrado.")
-        
-        self.driver.get('https://cp.ravenro.com.br/votar')
+        self.votar('//button[contains(@class, "baTaHxaE")]', "Erro ao clicar no primeiro botão de votação")
         sleep(2)
-        self.handle_alert()  # Verifica e lida com alertas antes de continuar
-        try:
-            extend_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "baTaIaCh")]')))
-            extend_btn.click()
-        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
-            print(f"Erro ao clicar no segundo botão de votação: {e}")
-            self.handle_alert()
-            try:
-                # Lê o tempo restante
-                time_element = self.driver.find_element(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "baTaIaCt")]')
-                print(f"Tempo restante para votar: {time_element.text}")
-            except NoSuchElementException:
-                print("Elemento de tempo restante não encontrado.")
-        
+        self.votar('//button[contains(@class, "baTaIaCh")]', "Erro ao clicar no segundo botão de votação")
         sleep(2)
 
     def close(self):
