@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException, NoAlertPresentException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException
 from time import sleep
 
 # Lista de credenciais
@@ -60,7 +60,7 @@ class TaskerBot():
         try:
             task_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "baTaHxaE")]')))
             task_btn.click()
-        except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
+        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
             print(f"Erro ao clicar no primeiro botão de votação: {e}")
             self.handle_alert()
             try:
@@ -76,7 +76,7 @@ class TaskerBot():
         try:
             extend_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "baTaIaCh")]')))
             extend_btn.click()
-        except (TimeoutException, ElementNotInteractableException, UnexpectedAlertPresentException) as e:
+        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
             print(f"Erro ao clicar no segundo botão de votação: {e}")
             self.handle_alert()
             try:
