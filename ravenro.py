@@ -1,102 +1,89 @@
-import os
+from secrets import username, password
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+#from webdriver_manager.core.utils import ChromeType
+from webdriver_manager.core.os_manager import ChromeType
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.keys import Keys
+from time import sleep, time
+from datetime import datetime
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException
-from time import sleep
 
 # Lista de credenciais
 credenciais = [
     {"usuario": os.getenv("USUARIO"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO2"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO3"), "senha": os.getenv("SENHA")},
-    {"usuario": os.getenv("USUARIO4"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO_TULYO"), "senha": os.getenv("SENHA_TULYO")}
 ]
 
-chrome_service = Service(ChromeDriverManager().install())
+chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
 
 chrome_options = Options()
-chrome_options.add_argument("--headless")
-chrome_options.add_argument("--disable-gpu")
-chrome_options.add_argument("--window-size=1920,1200")
-chrome_options.add_argument("--ignore-certificate-errors")
-chrome_options.add_argument("--disable-extensions")
-chrome_options.add_argument("--no-sandbox")
-chrome_options.add_argument("--disable-dev-shm-usage")
-chrome_options.add_argument("--remote-debugging-port=9222")
+options = [
+    "--headless",
+    "--disable-gpu",
+    "--window-size=1920,1200",
+    "--ignore-certificate-errors",
+    "--disable-extensions",
+    "--no-sandbox",
+    "--disable-dev-shm-usage"
+]
+for option in options:
+    chrome_options.add_argument(option)
 
 class TaskerBot():
     def __init__(self):
+        options = Options()
+        options.headless = True
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-        self.wait = WebDriverWait(self.driver, 15)  # Aumentando para 15 segundos
 
-    def handle_alert(self):
-        try:
-            alert = self.driver.switch_to.alert
-            alert_text = alert.text
-            print(f"Alerta presente: {alert_text}")
-            alert.accept()
-        except NoAlertPresentException:
-            pass
-
-    def login(self, usuario, senha):
+    def login(self):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
-        try:
-            email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Login"]')))
-            email_in.send_keys(usuario)
-            pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Senha"]')
-            pw_in.send_keys(senha)
-            login_btn = self.driver.find_element(By.XPATH, '//button[contains(@class, "baTaHaVg0")]')
-            login_btn.click()
-            sleep(5)
-        except TimeoutException as e:
-            print(f"Erro ao localizar elementos de login: {e}")
+        email_in = self.driver.find_element("xpath",'<input class="bubble-element Input baTaHaVb0 a1717435427938x967" type="input" placeholder="Login" style="background-color: rgb(255, 255, 255);">')
+        email_in.send_keys(username)
+        pw_in = self.driver.find_element("xpath",'<input class="bubble-element Input baTaHaVf0 a1717435427938x967" type="password" placeholder="Senha" autocomplete="new-password" style="background-color: rgb(255, 255, 255);">')
+        pw_in.send_keys(password)
+        login_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaHaVg0" style="box-shadow: 0px 7px 30px -10px rgba(var(--color_primary_default_rgb), 0.1); background: none rgb(228, 161, 1);">LOGIN</button>')
+        login_btn.click()
+        sleep(5)
 
-    def votar(self, button_xpath, error_message):
+    def voter1(self):
+        self.driver.get('https://cp.ravenro.com.br/votar')
+        sleep(5)
         try:
-            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
-            print(f"Clicando no botão: {button_xpath}")
-            btn.click()
-        except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
-            print(f"{error_message}: {e}")
-            self.handle_alert()
-            try:
-                # Lê o tempo restante
-                time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
-                for element in time_elements:
-                    print(f"Tempo restante para votar: {element.text}")
-            except NoSuchElementException:
-                print("Elemento de tempo restante não encontrado.")
+            task_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaHxaE" style="max-height: unset; box-shadow: rgba(68, 76, 231, 0.1) 0px 7px 30px -10px; background: none rgb(108, 127, 235); border-color: rgb(108, 127, 235);">Votar</button>')
+            task_btn.click()
+            sleep(2)
+        except:
+            remain_time = self.driver.find_element("xpath",'<div class="bubble-element Text baTaIaCt">')
+            print(remain_time.text)
+            sleep(2)
 
-    def tasker(self):
+    def voter2(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
-        self.handle_alert()  # Verifica e lida com alertas antes de continuar
-        self.votar('//button[@class="clickable-element bubble-element Button baTaHxaE"]', "Erro ao clicar no primeiro botão de votação")
-        sleep(2)
-        self.driver.get('https://cp.ravenro.com.br/votar')
-        self.handle_alert()  # Verifica e lida com alertas antes de continuar
-        self.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]', "Erro ao clicar no segundo botão de votação")
-        sleep(2)
+        sleep(5)
+        try:
+            task_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaIaCh" style="max-height: unset; box-shadow: rgba(68, 76, 231, 0.1) 0px 7px 30px -10px; background: none rgb(108, 127, 235); border-color: rgb(108, 127, 235);">Votar</button>')
+            task_btn.click()
+            sleep(2)
+        except:
+            remain_time = self.driver.find_element("xpath",'<div class="bubble-element Text baTaIaCz">')
+            print(remain_time.text)
+            sleep(2)
 
     def logoff(self):
         # Voltar para a página inicial
         self.driver.get('https://cp.ravenro.com.br/inicio')
         try:
-            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "logoff-btn")]')))
+            logoff_btn = self.driver.find_element("xpath", '<text class="fa" x="50%" y="50%" text-anchor="middle" style="font-size: 50px; fill: currentcolor;"></text>')
             logoff_btn.click()
         except TimeoutException as e:
             print(f"Erro ao tentar fazer logoff: {e}")
         finally:
             self.driver.quit()
-
-    def close(self):
-        self.driver.quit()
 
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
@@ -104,5 +91,6 @@ for cred in credenciais:
 
     bot = TaskerBot()
     bot.login(cred["usuario"], cred["senha"])
-    bot.tasker()
+    bot.voter1()
+    bot.voter2()
     bot.logoff()
