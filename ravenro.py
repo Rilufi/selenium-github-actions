@@ -51,7 +51,7 @@ class TaskerBot():
             email_in.send_keys(usuario)
             pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Senha"]')
             pw_in.send_keys(senha)
-            login_btn = self.driver.find_element(By.XPATH, '//button[text()="Entrar"]')
+            login_btn = self.driver.find_element(By.XPATH, '//button[contains(@class, "baTaHaVg0")]')
             login_btn.click()
             sleep(5)
         except TimeoutException as e:
