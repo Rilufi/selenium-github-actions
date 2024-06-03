@@ -54,7 +54,7 @@ class TaskerBot():
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(5)
         try:
-            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH,'//button[@class="clickable-element bubble-element Button baTaHxaE"]'))
+            btn = self.wait.until(EC.element_to_be_clickable(By.XPATH,'//button[@class="clickable-element bubble-element Button baTaHxaE"]'))
             btn.click()
             sleep(2)
         except:
@@ -68,7 +68,7 @@ class TaskerBot():
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(5)
         try:
-            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH,'//button[@class="clickable-element bubble-element Button baTaIaCh"]'))
+            btn = self.wait.until(EC.element_to_be_clickable(By.XPATH,'//button[@class="clickable-element bubble-element Button baTaIaCh"]'))
             btn.click()
             sleep(2)
         except:
