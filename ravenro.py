@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException
 from time import sleep
 
 # Lista de credenciais
@@ -69,7 +69,7 @@ class TaskerBot():
         except UnexpectedAlertPresentException:
             alert = self.driver.switch_to.alert
             alert.accept()
-            print("Alerta inesperado resolvido.")
+            print("Alerta inesperado resolvido em voter1.")
 
     def voter2(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
@@ -86,7 +86,7 @@ class TaskerBot():
         except UnexpectedAlertPresentException:
             alert = self.driver.switch_to.alert
             alert.accept()
-            print("Alerta inesperado resolvido.")
+            print("Alerta inesperado resolvido em voter2.")
 
     def logoff(self):
         self.driver.get('https://cp.ravenro.com.br/inicio')
@@ -96,18 +96,27 @@ class TaskerBot():
         except TimeoutException as e:
             print(f"Erro ao tentar fazer logoff: {e}")
         except UnexpectedAlertPresentException:
-            alert = self.driver.switch_to.alert
-            alert.accept()
-            print("Alerta inesperado resolvido.")
+            try:
+                alert = self.driver.switch_to.alert
+                alert.accept()
+                print("Alerta inesperado resolvido no logoff.")
+            except NoAlertPresentException:
+                print("Nenhum alerta presente para resolver.")
         finally:
             self.driver.quit()
 
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
         raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
-
+    
+    print(f"Iniciando votação para {cred['usuario']}")
     bot = TaskerBot()
-    bot.login(cred["usuario"], cred["senha"])
-    bot.voter1()
-    bot.voter2()
-    bot.logoff()
+    try:
+        bot.login(cred["usuario"], cred["senha"])
+        bot.voter1()
+        bot.voter2()
+    except Exception as e:
+        print(f"Erro durante a execução para {cred['usuario']}: {e}")
+    finally:
+        bot.logoff()
+    print(f"Finalizado para {cred['usuario']}")
