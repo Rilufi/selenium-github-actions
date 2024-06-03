@@ -12,6 +12,7 @@ from time import sleep
 
 # Lista de credenciais
 credenciais = [
+    {"usuario": "rilufax", "senha": os.getenv("SENHA")},
     {"usuario": "rilufex", "senha": os.getenv("SENHA")},
     {"usuario": "rilufix", "senha": os.getenv("SENHA")},
     {"usuario": "rilufox", "senha": os.getenv("SENHA")},
