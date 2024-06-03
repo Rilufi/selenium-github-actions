@@ -92,6 +92,9 @@ class TaskerBot():
         finally:
             self.driver.quit()
 
+    def quiter(self):
+        self.driver.quit()
+
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
         raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
@@ -106,5 +109,5 @@ for cred in credenciais:
         print(f"Erro durante a execução para {cred['usuario']}: {e}")
     finally:
      #   bot.logoff()
-        driver.quit()
+        bot.quiter()
     print(f"Finalizado para {cred['usuario']}")
