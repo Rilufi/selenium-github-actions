@@ -13,6 +13,7 @@ from time import sleep
 credenciais = [
     {"usuario": os.getenv("USUARIO"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO2"), "senha": os.getenv("SENHA")},
+    {"usuario": os.getenv("USUARIO3"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO_TULYO"), "senha": os.getenv("SENHA_TULYO")}
 ]
 
