@@ -68,9 +68,12 @@ class TaskerBot():
                 print(f"Tempo restante para votar: {time_elements[0].text}")
             sleep(2)
         except UnexpectedAlertPresentException:
-            alert = self.driver.switch_to.alert
-            alert.accept()
-            print("Alerta inesperado resolvido em votar.")
+            try:
+                alert = self.driver.switch_to.alert
+                alert.accept()
+                print("Alerta inesperado resolvido em votar.")
+            except NoAlertPresentException:
+                print("Nenhum alerta presente para resolver.")
 
     def logoff(self):
         self.driver.get('https://cp.ravenro.com.br/inicio')
@@ -97,8 +100,8 @@ for cred in credenciais:
     bot = TaskerBot()
     try:
         bot.login(cred["usuario"], cred["senha"])
-        bot.votar('//button[@class="clickable-element bubble-element Button baTaHxaE"]')
-        bot.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]')
+        bot.votar('//button[@class="clickable-element bubble-element Button baTaHxaE"]')  # Primeiro botão
+        bot.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]')  # Segundo botão
     except Exception as e:
         print(f"Erro durante a execução para {cred['usuario']}: {e}")
     finally:
