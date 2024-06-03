@@ -6,7 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException, WebDriverException
 from time import sleep
 
 # Lista de credenciais
@@ -44,15 +44,17 @@ class TaskerBot():
             pass
 
     def login(self, usuario, senha):
-        self.driver.get('https://cp.ravenro.com.br/')
-        sleep(2)
-        email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')))
-        email_in.send_keys(usuario)
-        pw_in = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[2]')
-        pw_in.send_keys(senha)
-        login_btn = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/button[1]')
-        login_btn.click()
-        sleep(5)
+        try:
+            self.driver.get('https://cp.ravenro.com.br/')
+            email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[1]')))
+            email_in.send_keys(usuario)
+            pw_in = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/input[2]')
+            pw_in.send_keys(senha)
+            login_btn = self.driver.find_element(By.XPATH, '/html/body/div[1]/div[2]/div/div/div[2]/div/button[1]')
+            login_btn.click()
+        except (TimeoutException, NoSuchElementException) as e:
+            print(f"Erro ao tentar fazer login: {e}")
+            self.handle_alert()
 
     def votar(self, button_xpath, error_message):
         try:
@@ -79,9 +81,9 @@ class TaskerBot():
         sleep(2)
 
     def logoff(self):
-        # Voltar para a página inicial
-        self.driver.get('https://cp.ravenro.com.br/inicio')
         try:
+            # Voltar para a página inicial
+            self.driver.get('https://cp.ravenro.com.br/inicio')
             logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '/html/body/div[2]/div/div/div[2]/div[2]/button/svg/text')))
             logoff_btn.click()
         except TimeoutException as e:
@@ -96,7 +98,12 @@ for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
         raise ValueError("Usuário ou senha não foram configurados corretamente nos segredos do ambiente.")
     
-    bot = TaskerBot()
-    bot.login(cred["usuario"], cred["senha"])
-    bot.tasker()
-    bot.logoff()
+    try:
+        bot = TaskerBot()
+        bot.login(cred["usuario"], cred["senha"])
+        bot.tasker()
+        bot.logoff()
+    except WebDriverException as e:
+        print(f"Erro crítico durante a execução do bot: {e}")
+    finally:
+        bot.close()
