@@ -12,11 +12,11 @@ from time import sleep
 
 # Lista de credenciais
 credenciais = [
-    {"usuario": os.getenv("USUARIO"), "senha": os.getenv("SENHA")},
-    {"usuario": os.getenv("USUARIO2"), "senha": os.getenv("SENHA")},
-    {"usuario": os.getenv("USUARIO3"), "senha": os.getenv("SENHA")},
-    {"usuario": os.getenv("USUARIO4"), "senha": os.getenv("SENHA")},
-    {"usuario": os.getenv("USUARIO_TULYO"), "senha": os.getenv("SENHA_TULYO")}
+    {"usuario": "rilufex", "senha": os.getenv("SENHA")},
+    {"usuario": "rilufix", "senha": os.getenv("SENHA")},
+    {"usuario": "rilufox", "senha": os.getenv("SENHA")},
+    {"usuario": "rilufux", "senha": os.getenv("SENHA")},
+    {"usuario": "skzhito", "senha": os.getenv("SENHA_TULYO")}
 ]
 
 chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
