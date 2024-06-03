@@ -1,7 +1,7 @@
 name: RavenRO
 
 on: push
-  #schedule:
+ # schedule:
  #   - cron: '0 * * * *' 
 
 jobs:
@@ -31,9 +31,5 @@ jobs:
       run: |
         python ravenro.py
       env:
-        USUARIO: ${{ secrets.USUARIO }}
-        USUARIO2: ${{ secrets.USUARIO2 }}
-        USUARIO3: ${{ secrets.USUARIO3 }}
         SENHA: ${{ secrets.SENHA }}
-        USUARIO_TULYO: ${{ secrets.USUARIO_TULYO }}
         SENHA_TULYO: ${{ secrets.SENHA_TULYO }}
