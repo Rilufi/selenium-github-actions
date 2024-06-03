@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException, NoAlertPresentException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from time import sleep
 
 # Lista de credenciais
@@ -15,6 +15,7 @@ credenciais = [
     {"usuario": os.getenv("USUARIO"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO2"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO3"), "senha": os.getenv("SENHA")},
+    {"usuario": os.getenv("USUARIO4"), "senha": os.getenv("SENHA")},
     {"usuario": os.getenv("USUARIO_TULYO"), "senha": os.getenv("SENHA_TULYO")}
 ]
 
@@ -39,6 +40,7 @@ class TaskerBot():
         self.wait = WebDriverWait(self.driver, 15)
 
     def login(self, usuario, senha):
+        print(f"{usuario} votando")
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
         try:
@@ -61,8 +63,8 @@ class TaskerBot():
             sleep(2)
         except (TimeoutException, NoSuchElementException):
             time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
-            for element in time_elements:
-                print(f"Tempo restante para votar: {element.text}")
+            if time_elements:
+                print(f"Tempo restante para votar: {time_elements[0].text}")
             sleep(2)
 
     def voter2(self):
@@ -74,8 +76,8 @@ class TaskerBot():
             sleep(2)
         except (TimeoutException, NoSuchElementException):
             time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
-            for element in time_elements:
-                print(f"Tempo restante para votar: {element.text}")
+            if time_elements:
+                print(f"Tempo restante para votar: {time_elements[0].text}")
             sleep(2)
 
     def logoff(self):
