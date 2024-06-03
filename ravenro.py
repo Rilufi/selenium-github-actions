@@ -55,8 +55,6 @@ class TaskerBot():
         sleep(5)
 
     def votar(self, button_xpath, error_message):
-        self.driver.get('https://cp.ravenro.com.br/votar')
-        self.handle_alert()  # Verifica e lida com alertas antes de continuar
         try:
             btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
             btn.click()
@@ -71,14 +69,18 @@ class TaskerBot():
                 print("Elemento de tempo restante não encontrado.")
 
     def tasker(self):
-        self.votar('//button[contains(@class, "baTaHxaE")]', "Erro ao clicar no primeiro botão de votação")
+        self.driver.get('https://cp.ravenro.com.br/votar')
+        self.handle_alert()  # Verifica e lida com alertas antes de continuar
+        self.votar('//button[@class="clickable-element bubble-element Button baTaHxaE"]', "Erro ao clicar no primeiro botão de votação")
         sleep(2)
-        self.votar('//button[contains(@class, "baTaIaCh")]', "Erro ao clicar no segundo botão de votação")
+        self.driver.get('https://cp.ravenro.com.br/votar')
+        self.handle_alert()  # Verifica e lida com alertas antes de continuar
+        self.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]', "Erro ao clicar no segundo botão de votação")
         sleep(2)
 
     def close(self):
         try:
-            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//text[@class="fa" and contains(text(), "")]')))
+            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//i[@class="fa fa-sign-out"]')))
             logoff_btn.click()
         except TimeoutException as e:
             print(f"Erro ao tentar fazer logoff: {e}")
