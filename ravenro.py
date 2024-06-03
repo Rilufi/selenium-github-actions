@@ -54,11 +54,11 @@ class TaskerBot():
         except TimeoutException as e:
             print(f"Erro ao localizar elementos de login: {e}")
 
-    def voter1(self):
+    def votar(self, botao_xpath):
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(5)
         try:
-            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@class="clickable-element bubble-element Button baTaHxaE"]')))
+            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, botao_xpath)))
             btn.click()
             sleep(2)
         except (TimeoutException, NoSuchElementException):
@@ -69,24 +69,7 @@ class TaskerBot():
         except UnexpectedAlertPresentException:
             alert = self.driver.switch_to.alert
             alert.accept()
-            print("Alerta inesperado resolvido em voter1.")
-
-    def voter2(self):
-        self.driver.get('https://cp.ravenro.com.br/votar')
-        sleep(5)
-        try:
-            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[@class="clickable-element bubble-element Button baTaIaCh"]')))
-            btn.click()
-            sleep(2)
-        except (TimeoutException, NoSuchElementException):
-            time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
-            if time_elements:
-                print(f"Tempo restante para votar: {time_elements[0].text}")
-            sleep(2)
-        except UnexpectedAlertPresentException:
-            alert = self.driver.switch_to.alert
-            alert.accept()
-            print("Alerta inesperado resolvido em voter2.")
+            print("Alerta inesperado resolvido em votar.")
 
     def logoff(self):
         self.driver.get('https://cp.ravenro.com.br/inicio')
@@ -113,8 +96,8 @@ for cred in credenciais:
     bot = TaskerBot()
     try:
         bot.login(cred["usuario"], cred["senha"])
-        bot.voter1()
-        bot.voter2()
+        bot.votar('//button[@class="clickable-element bubble-element Button baTaHxaE"]')
+        bot.votar('//button[@class="clickable-element bubble-element Button baTaIaCh"]')
     except Exception as e:
         print(f"Erro durante a execução para {cred['usuario']}: {e}")
     finally:
