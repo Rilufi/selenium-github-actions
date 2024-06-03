@@ -32,7 +32,7 @@ chrome_options.add_argument("--remote-debugging-port=9222")
 class TaskerBot():
     def __init__(self):
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-        self.wait = WebDriverWait(self.driver, 10)  # 10 segundos de espera explícita
+        self.wait = WebDriverWait(self.driver, 15)  # Aumentando para 15 segundos
 
     def handle_alert(self):
         try:
@@ -60,6 +60,7 @@ class TaskerBot():
     def votar(self, button_xpath, error_message):
         try:
             btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, button_xpath)))
+            print(f"Clicando no botão: {button_xpath}")
             btn.click()
         except (TimeoutException, NoSuchElementException, UnexpectedAlertPresentException) as e:
             print(f"{error_message}: {e}")
