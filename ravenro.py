@@ -79,13 +79,7 @@ class TaskerBot():
         sleep(2)
 
     def close(self):
-        try:
-            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//i[@class="fa fa-sign-out"]')))
-            logoff_btn.click()
-        except TimeoutException as e:
-            print(f"Erro ao tentar fazer logoff: {e}")
-        finally:
-            self.driver.quit()
+        self.driver.quit()
 
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
