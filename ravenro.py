@@ -42,11 +42,11 @@ class TaskerBot():
     def login(self, usuario, senha):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
-        email_in = self.driver.find_element("xpath",'<input class="bubble-element Input baTaHaVb0 a1717435427938x967" type="input" placeholder="Login" style="background-color: rgb(255, 255, 255);">')
-        email_in.send_keys(username)
-        pw_in = self.driver.find_element("xpath",'<input class="bubble-element Input baTaHaVf0 a1717435427938x967" type="password" placeholder="Senha" autocomplete="new-password" style="background-color: rgb(255, 255, 255);">')
-        pw_in.send_keys(password)
-        login_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaHaVg0" style="box-shadow: 0px 7px 30px -10px rgba(var(--color_primary_default_rgb), 0.1); background: none rgb(228, 161, 1);">LOGIN</button>')
+        email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Login"]')))
+        email_in.send_keys(usuario)
+        pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Senha"]')
+        pw_in.send_keys(senha)
+        login_btn = self.driver.find_element(By.XPATH, '//button[contains(@class, "baTaHaVg0")]')
         login_btn.click()
         sleep(5)
 
@@ -54,31 +54,34 @@ class TaskerBot():
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(5)
         try:
-            task_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaHxaE" style="max-height: unset; box-shadow: rgba(68, 76, 231, 0.1) 0px 7px 30px -10px; background: none rgb(108, 127, 235); border-color: rgb(108, 127, 235);">Votar</button>')
-            task_btn.click()
+            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH,'//button[@class="clickable-element bubble-element Button baTaHxaE"]'))
+            btn.click()
             sleep(2)
         except:
-            remain_time = self.driver.find_element("xpath",'<div class="bubble-element Text baTaIaCt">')
-            print(remain_time.text)
+            time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
+                for element in time_elements:
+                    print(f"Tempo restante para votar: {element.text}")
             sleep(2)
 
+    
     def voter2(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
         sleep(5)
         try:
-            task_btn = self.driver.find_element("xpath",'<button class="clickable-element bubble-element Button baTaIaCh" style="max-height: unset; box-shadow: rgba(68, 76, 231, 0.1) 0px 7px 30px -10px; background: none rgb(108, 127, 235); border-color: rgb(108, 127, 235);">Votar</button>')
-            task_btn.click()
+            btn = self.wait.until(EC.element_to_be_clickable((By.XPATH,'//button[@class="clickable-element bubble-element Button baTaIaCh"]'))
+            btn.click()
             sleep(2)
         except:
-            remain_time = self.driver.find_element("xpath",'<div class="bubble-element Text baTaIaCz">')
-            print(remain_time.text)
+            time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
+                for element in time_elements:
+                    print(f"Tempo restante para votar: {element.text}")
             sleep(2)
 
     def logoff(self):
         # Voltar para a página inicial
         self.driver.get('https://cp.ravenro.com.br/inicio')
         try:
-            logoff_btn = self.driver.find_element("xpath", '<text class="fa" x="50%" y="50%" text-anchor="middle" style="font-size: 50px; fill: currentcolor;"></text>')
+            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "logoff-btn")]')))
             logoff_btn.click()
         except TimeoutException as e:
             print(f"Erro ao tentar fazer logoff: {e}")
