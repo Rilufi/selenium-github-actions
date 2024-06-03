@@ -105,5 +105,6 @@ for cred in credenciais:
     except Exception as e:
         print(f"Erro durante a execução para {cred['usuario']}: {e}")
     finally:
-        bot.logoff()
+     #   bot.logoff()
+        driver.quit()
     print(f"Finalizado para {cred['usuario']}")
