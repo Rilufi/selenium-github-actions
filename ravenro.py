@@ -39,7 +39,7 @@ class TaskerBot():
         options.headless = True
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
 
-    def login(self):
+    def login(self, usuario, senha):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
         email_in = self.driver.find_element("xpath",'<input class="bubble-element Input baTaHaVb0 a1717435427938x967" type="input" placeholder="Login" style="background-color: rgb(255, 255, 255);">')
