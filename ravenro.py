@@ -64,7 +64,7 @@ class TaskerBot():
             self.handle_alert()
             try:
                 # Lê o tempo restante
-                time_element = self.driver.find_element(By.XPATH, '//div[@class="bubble-element Text baTaIaCt"]')
+                time_element = self.driver.find_element(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "baTaIaCt")]')
                 print(f"Tempo restante para votar: {time_element.text}")
             except NoSuchElementException:
                 print("Elemento de tempo restante não encontrado.")
@@ -80,7 +80,7 @@ class TaskerBot():
             self.handle_alert()
             try:
                 # Lê o tempo restante
-                time_element = self.driver.find_element(By.XPATH, '//div[@class="bubble-element Text baTaIaCt"]')
+                time_element = self.driver.find_element(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "baTaIaCt")]')
                 print(f"Tempo restante para votar: {time_element.text}")
             except NoSuchElementException:
                 print("Elemento de tempo restante não encontrado.")
@@ -88,9 +88,13 @@ class TaskerBot():
         sleep(2)
 
     def close(self):
-        logoff_btn = self.wait.until(EC.presence_of_element_located((By.XPATH, '//text[@class="fa" and contains(text(), "")]')))
-        logoff_btn.click()
-        self.driver.quit()
+        try:
+            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//text[@class="fa" and contains(text(), "")]')))
+            logoff_btn.click()
+        except TimeoutException as e:
+            print(f"Erro ao tentar fazer logoff: {e}")
+        finally:
+            self.driver.quit()
 
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
