@@ -46,13 +46,16 @@ class TaskerBot():
     def login(self, usuario, senha):
         self.driver.get('https://cp.ravenro.com.br/')
         sleep(2)
-        email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="E-mail"]')))
-        email_in.send_keys(usuario)
-        pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Senha"]')
-        pw_in.send_keys(senha)
-        login_btn = self.driver.find_element(By.XPATH, '//button[text()="Entrar"]')
-        login_btn.click()
-        sleep(5)
+        try:
+            email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Login"]')))
+            email_in.send_keys(usuario)
+            pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Senha"]')
+            pw_in.send_keys(senha)
+            login_btn = self.driver.find_element(By.XPATH, '//button[text()="Entrar"]')
+            login_btn.click()
+            sleep(5)
+        except TimeoutException as e:
+            print(f"Erro ao localizar elementos de login: {e}")
 
     def votar(self, button_xpath, error_message):
         try:
