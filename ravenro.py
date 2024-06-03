@@ -7,7 +7,7 @@ from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import TimeoutException, NoSuchElementException
+from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException
 from time import sleep
 
 # Lista de credenciais
@@ -66,6 +66,10 @@ class TaskerBot():
             if time_elements:
                 print(f"Tempo restante para votar: {time_elements[0].text}")
             sleep(2)
+        except UnexpectedAlertPresentException:
+            alert = self.driver.switch_to.alert
+            alert.accept()
+            print("Alerta inesperado resolvido.")
 
     def voter2(self):
         self.driver.get('https://cp.ravenro.com.br/votar')
@@ -79,6 +83,10 @@ class TaskerBot():
             if time_elements:
                 print(f"Tempo restante para votar: {time_elements[0].text}")
             sleep(2)
+        except UnexpectedAlertPresentException:
+            alert = self.driver.switch_to.alert
+            alert.accept()
+            print("Alerta inesperado resolvido.")
 
     def logoff(self):
         self.driver.get('https://cp.ravenro.com.br/inicio')
@@ -87,6 +95,10 @@ class TaskerBot():
             logoff_btn.click()
         except TimeoutException as e:
             print(f"Erro ao tentar fazer logoff: {e}")
+        except UnexpectedAlertPresentException:
+            alert = self.driver.switch_to.alert
+            alert.accept()
+            print("Alerta inesperado resolvido.")
         finally:
             self.driver.quit()
 
