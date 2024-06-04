@@ -10,6 +10,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import TimeoutException, NoSuchElementException, UnexpectedAlertPresentException, NoAlertPresentException
 from time import sleep
 
+
 # Lista de credenciais
 credenciais = [
     {"usuario": "rilufax", "senha": os.getenv("SENHA")},
@@ -61,6 +62,7 @@ class TaskerBot():
         try:
             btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, botao_xpath)))
             btn.click()
+            print("Votado!")
             sleep(2)
         except (TimeoutException, NoSuchElementException):
             time_elements = self.driver.find_elements(By.XPATH, '//div[contains(text(), "Aguarde:") and contains(@class, "bubble-element Text")]')
@@ -75,25 +77,9 @@ class TaskerBot():
             except NoAlertPresentException:
                 print("Nenhum alerta presente para resolver.")
 
-    def logoff(self):
-        self.driver.get('https://cp.ravenro.com.br/inicio')
-        try:
-            logoff_btn = self.wait.until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "logoff-btn")]')))
-            logoff_btn.click()
-        except TimeoutException as e:
-            print(f"Erro ao tentar fazer logoff: {e}")
-        except UnexpectedAlertPresentException:
-            try:
-                alert = self.driver.switch_to.alert
-                alert.accept()
-                print("Alerta inesperado resolvido no logoff.")
-            except NoAlertPresentException:
-                print("Nenhum alerta presente para resolver.")
-        finally:
-            self.driver.quit()
-
     def quiter(self):
         self.driver.quit()
+
 
 for cred in credenciais:
     if not cred["usuario"] or not cred["senha"]:
@@ -108,6 +94,5 @@ for cred in credenciais:
     except Exception as e:
         print(f"Erro durante a execução para {cred['usuario']}: {e}")
     finally:
-     #   bot.logoff()
         bot.quiter()
     print(f"Finalizado para {cred['usuario']}")
