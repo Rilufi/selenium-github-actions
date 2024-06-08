@@ -11,14 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out this repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Keep this repo alive
         uses: gautamkrishnar/keepalive-workflow@master
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: 3.x
       - name: Installed package list
         run: apt list --installed
       - name: Remove Chrome
