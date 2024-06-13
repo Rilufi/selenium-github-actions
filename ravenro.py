@@ -18,7 +18,8 @@ credenciais = [
     {"usuario": "rilufix", "senha": os.getenv("SENHA")},
     {"usuario": "rilufox", "senha": os.getenv("SENHA")},
     {"usuario": "rilufux", "senha": os.getenv("SENHA")},
-    {"usuario": "skzhito", "senha": os.getenv("SENHA_TULYO")}
+    {"usuario": "skzhito", "senha": os.getenv("SENHA_TULYO")},
+    {"usuario": "tulyocm", "senha": os.getenv("SENHA_TULYO2")}
 ]
 
 chrome_service = Service(ChromeDriverManager(chrome_type=ChromeType.CHROMIUM).install())
