@@ -33,3 +33,4 @@ jobs:
       env:
         SENHA: ${{ secrets.SENHA }}
         SENHA_TULYO: ${{ secrets.SENHA_TULYO }}
+        SENHA_TULYO2: ${{ secrets.SENHA_TULYO2 }}
