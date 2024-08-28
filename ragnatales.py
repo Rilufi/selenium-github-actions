@@ -39,16 +39,18 @@ class TaskerBot():
     def login(self, usuario, senha):
         print(f"{usuario} votando")
         self.driver.get('https://ragnatales.com.br/profile/login')
-        sleep(2)
+        sleep(2)  # Aguarda para garantir que a página foi carregada
         try:
-            email_in = self.wait.until(EC.presence_of_element_located((By.XPATH, '//input[@placeholder="Endereço de E-mail"]')))
+            # Espera o campo de e-mail estar presente e visível
+            email_in = self.wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Endereço de E-mail"]')))
             email_in.send_keys(usuario)
-            pw_in = self.driver.find_element(By.XPATH, '//input[@placeholder="Digite sua senha de acesso"]')
+
+            # Espera o campo de senha estar presente e visível
+            pw_in = self.wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Digite sua senha de acesso"]')))
             pw_in.send_keys(senha)
             pw_in.send_keys(Keys.ENTER)
-#            login_btn = self.driver.find_element(By.XPATH, '//button[contains(@class, "baTaHaVg0")]')
- #           login_btn.click()
-            sleep(5)
+
+            sleep(5)  # Ajuste o tempo de espera conforme necessário
         except TimeoutException as e:
             print(f"Erro ao localizar elementos de login: {e}")
 
