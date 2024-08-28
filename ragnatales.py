@@ -34,7 +34,7 @@ for option in options:
 class TaskerBot():
     def __init__(self):
         self.driver = webdriver.Chrome(service=chrome_service, options=chrome_options)
-        self.wait = WebDriverWait(self.driver, 15)
+        self.wait = WebDriverWait(self.driver, 20)
 
     def login(self, usuario, senha):
         print(f"{usuario} votando")
@@ -42,11 +42,11 @@ class TaskerBot():
         sleep(2)  # Aguarda para garantir que a página foi carregada
         try:
             # Espera o campo de e-mail estar presente e visível
-            email_in = self.wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Endereço de E-mail"]')))
+            email_in = self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Endereço de E-mail"]')))
             email_in.send_keys(usuario)
 
             # Espera o campo de senha estar presente e visível
-            pw_in = self.wait.until(EC.visibility_of_element_located((By.XPATH, '//input[@placeholder="Digite sua senha de acesso"]')))
+            pw_in = self.wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'input[placeholder="Digite sua senha de acesso"]')))
             pw_in.send_keys(senha)
             pw_in.send_keys(Keys.ENTER)
 
