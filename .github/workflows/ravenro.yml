@@ -1,8 +1,8 @@
 name: RavenRO
 
-on:
-  schedule:
-    - cron: '0 * * * *' 
+on: push
+#  schedule:
+#    - cron: '0 * * * *' 
 
 jobs:
   test:
@@ -34,3 +34,4 @@ jobs:
         SENHA: ${{ secrets.SENHA }}
         SENHA_TULYO: ${{ secrets.SENHA_TULYO }}
         SENHA_TULYO2: ${{ secrets.SENHA_TULYO2 }}
+        SENHA_TULYO3: ${{ secrets.SENHA_TULYO3 }}
